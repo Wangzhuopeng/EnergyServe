@@ -1,0 +1,32 @@
+datasets:
+  lmsys: {data_path: "./data/workload/lmsys_test.jsonl", lora_path: "./checkpoints/lmsys_lora"}
+  alpaca: {data_path: "./data/workload/alpaca_test.jsonl", lora_path: "./checkpoints/alpaca_lora"}
+  dolly: {data_path: "./data/workload/dolly_test.jsonl", lora_path: "./checkpoints/dolly_lora"}
+
+modes:
+  ours: {scheduler: "SJF", governor: "Adaptive-DVFS"}
+  vllm_base: {scheduler: "FCFS", governor: "None"}
+  fixed_150w: {scheduler: "FCFS", governor: "Fixed-150W"}
+  utilization_dvfs: {scheduler: "FCFS", governor: "Reactive-DVFS"}
+
+hardware:
+  gpu_id: 0
+  base_model: "/path/to/llama-3-8b"
+  power_high: 400
+  power_low: 180
+  max_concurrency: 64
+
+constants: {long_task_threshold: 300, aging_factor: 50.0, slo_base: 13, slo_token: 3}
+
+# 4. Workload Characterization Constants (New Section)
+characterization:
+  bucket_size: 50
+  # Input thresholds
+  thres_in_s: 256
+  thres_in_m: 1024
+  # Output thresholds
+  thres_out_s: 100
+  thres_out_m: 350
+  # 5. Workload Simulation Configuration (New Section)
+simulation:
+  arrival_rate: 50.0  # Requests per second (Poisson Process)
